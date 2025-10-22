@@ -1,14 +1,143 @@
+
 hr{
-    border-top: 1px dotted #8c8b8b
+    border-top: 0px dotted #8c8b8b;
 }
 p{
     font-family:Verdana, Geneva, Tahoma, sans-serif;
 }
+ol{
+    list-style-type: none;
+}
+
+/*********************************************************************************
+                                
+                                Body container
+
+*********************************************************************************/
+.bodyContainer{
+    display: flex;
+    flex-direction: column;
+    height:100vw;
+    width: 100vw;
+    background-color: #ede1dd;
+}
+
+/*********************************************************************************
+                                
+                                Full page header
+
+********************************************************************************/
+
+.headerContainer {
+  background-color: #444; /* optional: helps visibility */
+  color: orange;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  height: 60px;
+}
+
+/* Makes the H1 align left and buttons align right */
+.headerContent {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+/* Group for the buttons and welcome text */
+.headerButtons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
+}
+
+/* Regular button styling */
+.signUpButton,
+.logInButton {
+  position: static ; /* remove fixed positioning */
+  padding: 8px 14px;
+  border: none;
+  background-color: #888;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.signUpButton:hover,
+.logInButton:hover {
+  background-color: #aaa;
+}
+
+/* Greeting text */
+.welcome-text {
+  font-weight: bold;
+  font-size: 16px;
+  color: green;
+}
+
+
+
+
+/*********************************************************************************
+                                
+                                Board Title Styles
+
+*********************************************************************************/
+
+.boardTitleHeader{
+    display:block;
+    z-index: 0;
+    background-color: blueviolet;
+}
+
+.boardTitleHeaderWrap{
+    display: flex;
+    position: relative;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.boardTitleHeaderLeft{
+    display: flex;
+    position: relative;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    min-height: 32px;
+    width: 90%;
+}
+
+.boardTitleHeaderRight{
+    display: flex;
+    position: relative;
+    flex-wrap: nowrap;
+}
+
+.boardTitleHeaderOptionsButton{
+    float: inline-end;
+    text-align: center;
+}
+
+
+/*********************************************************************************
+                                
+                                Board Styles
+
+*********************************************************************************/
+
+.boardContent{
+    display: flex;
+    flex-direction: row;
+}
 
 .mainContent{
     display: flex;
-    flex-direction: row;
+    flex-direction:column;
     width:100%;
+    
 }
 
 .leftContent{
@@ -17,9 +146,288 @@ p{
     padding-right: 2.5%;
     flex-grow: 0;
     flex-shrink: 1;
+    background-color: lightblue;
 }
 
 .rightContentDiv{
     flex-grow: 1;
     flex-shrink: 0;
+    background-color: lightgreen;
+}
+
+
+/*********************************************************************************
+                                
+                                Left Content Boards List
+
+*********************************************************************************/
+
+.boardsListItem{
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    padding-right: 2.5%;
+    border: 5px solid olivedrab;
+    text-align: center;
+    margin-top: 4%;
+}
+
+/*********************************************************************************
+                                Log in Form Button and Pop Up
+
+**********************************************************************************/
+
+.logInPopUp{
+    display:none;
+    position: fixed;
+    top: 42px;
+    right: 20px;
+    border: 3px solid #f1f1f1;
+    z-index: 10;
+}
+
+.form-container{
+    max-width: 250px;
+    padding: 10px;
+    background-color: white;
+}
+
+.form-container input [type=text], .form-container input [type=password]{
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    border: none;
+}
+
+.form-container input [type=text]:focus, .form-container input [type=password]:focus{
+    background-color: #f1f1f1;
+    outline: none;
+}
+
+
+
+/*********************************************************************************
+                                sign in Form Button and Pop Up
+
+**********************************************************************************/
+.signUpPopUp{
+    display:none;
+    position: fixed;
+    top: 42px;
+    right: 80px;
+    border: 3px solid #f1f1f1;
+    z-index: 10;
+}
+
+.form-container{
+    max-width: 250px;
+    padding: 10px;
+    background-color: white;
+}
+
+.form-container input [type=text], .form-container input [type=password]{
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    border: none;
+}
+
+.form-container input [type=text]:focus, .form-container input [type=password]:focus{
+    background-color: #f1f1f1;
+    outline: none;
+}
+
+
+
+/*********************************************************************************
+                                Create Board Form Button and Pop Up
+
+*********************************************************************************/
+
+.newBoardButton{
+    position: relative;
+}
+
+.newBoardPopUp{
+    display:none;
+    position: fixed;
+    border: 3px solid #f1f1f1;
+    z-index: 10;
+}
+
+.newBoardForm-Container{
+    max-width: 200px;
+    padding: 10px;
+    background-color: white;
+}
+
+.newBoardForm-Container input [type=text], .newBoardForm-Container input [type=radio]{
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    border: none;
+}
+
+/*********************************************************************************
+                                Board Options Form Button and Pop Up
+
+*********************************************************************************/
+.boardOptionsButton{
+    position: relative;
+}
+
+.boardOptionsPopUp{
+    display:none;
+    position: fixed;
+    top:124px;
+    right:85px;
+    border: 3px solid #f1f1f1;
+    z-index: 10;
+}
+
+.boardOptionsForm-Container{
+    max-width: 200px;
+    padding: 10px;
+    background-color: white;
+}
+
+.boardOptionsForm-Container input [type=text], .boardOptionsForm-Container input [type=radio]{
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    border: none;
+}
+
+
+
+/*********************************************************************************
+                                Create Card Button and Pop Up
+
+*********************************************************************************/
+
+.newCardButton{
+    position: relative;
+}
+
+.newCardPopUp{
+    display:none;
+    position: fixed;
+    border: 3px solid #f1f1f1;
+    z-index: 10;
+}
+
+.newCardForm-Container{
+    max-width: 200px;
+    padding: 10px;
+    background-color: white;
+}
+
+.newCardForm-Container input [type=text], .newBoardForm-Container input [type=text]{
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    border: none;
+}
+
+
+/*********************************************************************************
+                                Card Stuff
+
+*********************************************************************************/
+
+.cardHeader{
+    display: flex;
+    position: relative;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.cardOLFormatting{
+    display: flex;
+    flex-direction: row;
+}
+
+.alignCards{
+    display: block;
+    flex-shrink: 0;
+    align-self: flex-start;
+    height: 100%;
+    padding-right: 5px;
+    border: 5px solid indianred;
+}
+
+
+/*********************************************************************************
+                                Edit Card Stuff
+
+*********************************************************************************/
+
+.editCardButton{
+    position: relative;
+}
+
+.editCardPopUp{
+    display:none;
+    position: fixed;
+    border: 3px solid #f1f1f1;
+    z-index: 10;
+}
+
+.editCardForm-Container{
+    max-width: 200px;
+    padding: 10px;
+    background-color: white;
+}
+
+.editCardForm-Container input [type=text], .newBoardForm-Container input [type=text]{
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    border: none;
+}
+
+
+/*********************************************************************************
+                                Create List Item
+
+*********************************************************************************/
+
+.newListItemButton{
+    position: relative;
+}
+
+.newListItemPopUp{
+    display:none;
+    position: fixed;
+    border: 3px solid #f1f1f1;
+    z-index: 10;
+}
+
+.newListItemForm-Container{
+    max-width: 200px;
+    padding: 10px;
+    background-color: white;
+}
+
+.newListItemForm-Container input [type=text], .newBoardForm-Container input [type=text]{
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    border: none;
+}
+
+
+/*********************************************************************************
+                                List Item Formatting
+
+*********************************************************************************/
+.listsContainer{
+    display: flex;
+    flex-direction: column;
+}
+
+.listsItem{
+    margin-left: 40px;
+    border: 5px solid olivedrab;
 }
