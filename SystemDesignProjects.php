@@ -468,17 +468,19 @@
                     method: "POST",
                     body: formData
                 })
-                .then(response => response.json())
+                .then(response => response.json()) // Expect JSON now
                 .then(data => {
-                    if (data.status === "success") {
-                        const realCardID = data.CardID;
-                        addCard(cName, cDesc, realCardID); // 👈 pass real DB ID here
+                    if (data.success) {
+                        console.log(data.message);
+                        addCard(cName, cDesc, data.CardID); // Use real DB CardID
                         closeNewCardForm();
                     } else {
-                        console.error("Error creating card:", data.message);
+                        console.error("Server error:", data.message);
+                        alert(data.message);
                     }
                 })
                 .catch(error => console.error("Fetch error:", error));
+
             }
 
 
