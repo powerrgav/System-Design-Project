@@ -23,7 +23,6 @@ $boardColor = "#ffffff"; // default color
 // Convert textual privacy value to numeric (for tinyint)
 $privacyValue = (strtolower($boardPrivacy) === 'private') ? 1 : 0;
 
-// ✅ Use $privacyValue in the SQL query, NOT $boardPrivacy
 $sql = "INSERT INTO board (username, BoardName, BoardPrivacy, BoardColor)
         VALUES ('$user', '$boardName', $privacyValue, '$boardColor')";
 

@@ -158,24 +158,6 @@
                                 <div class="cardHeader"><!--Card header-->
                                     <h2>Default Card 1</h2>
                                     <button onclick="openEditCardForm()" class="editCardButton" id="editCardButton">Edit Card</button><!--Edit Card button-->
-                                        <div class="editCardPopUp" id="editCardForm"><!--New Card form-->
-                                            <form action="null" class="editCardForm-Container">  
-                                                <h1>Edit card</h1>
-
-                                                    <label for="cardName">Card Name</label>
-                                                    <input type="text" placeholder="Enter the new card name" name="cardName">
-
-                                                    <label for="cardDescription">Card Description</label>
-                                                    <input type="text" placeholder="Enter the new card description" name="cardDescription">
-
-                                                    <label for="cardColor">Select the card's color:</label>
-                                                    <input type="color" id="newCardColor" name="newCardColor" value="#ff0000">
-
-                                                    <button type="submit">Edit Card</button>
-                                                    <button type ="button" id="closeEditCardBtn" onclick="closeEditCardForm()">Close</button> 
-                                            </form>
-
-                                        </div><!--End edit card form div-->
 
 
                                 </div><!--End Card Header-->
@@ -206,9 +188,6 @@
                         } else {
                             echo "successful connection!";
                         }
-                        
-                        
-                        echo "<p>Don't delete me, I am a PHP placeholder</p>";
                     ?>
 
 
@@ -261,6 +240,25 @@
                                             </form>
 
                     </div><!--End new list item form div-->
+
+            <div class="editCardPopUp" id="editCardForm" style="display:none;"><!--New Card form-->
+                                            <form action="null" class="editCardForm-Container">  
+                                                <h1>Edit card</h1>
+
+                                                    <label for="cardName">Card Name</label>
+                                                    <input type="text" placeholder="Enter the new card name" name="cardName">
+
+                                                    <label for="cardDescription">Card Description</label>
+                                                    <input type="text" placeholder="Enter the new card description" name="cardDescription">
+
+                                                    <label for="cardColor">Select the card's color:</label>
+                                                    <input type="color" id="newCardColor" name="newCardColor" value="#ff0000">
+
+                                                    <button type="submit">Edit Card</button>
+                                                    <button type ="button" id="closeEditCardBtn" onclick="closeEditCardForm()">Close</button> 
+                                            </form>
+
+                                        </div><!--End edit card form div-->
     
 
             <!--JavaScript to make forms open/close-->
@@ -418,6 +416,14 @@
                 listsContainer.className = "listsContainer";
                 listsContainer.id = listContainerID;
 
+                const editCardButton = document.createElement("button");
+                editCardButton.textContent = "Edit Card";
+                editCardButton.className = "editCardButton";
+                editCardButton.onclick = () =>{
+                    currentOpenCardID = realCardID;
+                    openEditCardForm(currentOpenCardID);
+                };
+
                 const newListButton = document.createElement("button");
                 newListButton.textContent = "Add a list item";
                 newListButton.className = "newListItemButton";
@@ -428,6 +434,7 @@
 
                 listsContainer.appendChild(newListButton);
                 newCardDiv.appendChild(cardTitleElement);
+                newCardDiv.appendChild(editCardButton);
                 newCardDiv.appendChild(cardDescriptionElement);
                 newCardDiv.appendChild(listsContainer);
 
@@ -636,7 +643,8 @@
                 document.getElementById("newCardForm").style.display="none";
             }
 
-            function openEditCardForm(){
+            function openEditCardForm(containerID){
+                currentTargetCardContainer = containerID;
                 document.getElementById("editCardForm").style.display = "block";
             }
 
