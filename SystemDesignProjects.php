@@ -259,6 +259,11 @@
                                             </form>
 
                                         </div><!--End edit card form div-->
+
+
+            <div class="logOutButton" id="logOutButton" style="display:none;"><!--Log Out Button-->
+                <button onclick="submitLogOut()">Log Out</button>
+            </div>
     
 
             <!--JavaScript to make forms open/close-->
@@ -728,6 +733,11 @@
                         document.getElementById("signUp").style.display = "none";
                         document.getElementById("logIn").style.display = "none";
 
+                        //show log out button
+                        let logOutButton = document.getElementById("logOutButton");
+                        logOutButton.style = "inline-block";
+                        headerContainer.append(logOutButton);
+
                         // show board container (if hidden)
                         const leftContent = document.getElementById("leftContent");
                         leftContent.style.display = "block";
@@ -759,6 +769,10 @@
                         console.error("Error:", error);
                     });
                 };
+            }
+
+            function submitLogOut(){
+                location.reload();
             }
 
 

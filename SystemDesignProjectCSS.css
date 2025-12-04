@@ -67,6 +67,17 @@ ol{
   transition: background-color 0.2s;
 }
 
+/* Regular button styling */
+.logOutButton{
+  position: static ; /* remove fixed positioning */
+  padding: 8px 14px;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
 .signUpButton:hover,
 .logInButton:hover {
   background-color: #aaa;
