@@ -85,7 +85,7 @@
                 <div class="boardTitleHeaderWrap"><!--Wrap the board title header--> 
                     
                 <span class="boardTitleHeaderLeft">
-                    <p>hella</p>
+                    <p>hello</p>
                 </span>
                     
                 <span class="boardTitleHeaderRight">
@@ -103,7 +103,7 @@
                                 <input type="radio" id="publicVisibility" name="boardPrivacy" value="Public">
                                 <label for="publicVisibility">Public</label>
 
-                                <button type="submit" id="confirmBoardOptionsBtn" onclick="processBoardOptionsForm()">Edit Board</button>
+                               <button type="submit" id="confirmBoardOptionsBtn">Edit Board</button>
                                 <button type ="button" id="closeBoardOptionsBtn" onclick="closeBoardOptionsForm()">Close</button>
                             </form>
 
@@ -264,6 +264,8 @@
             <div class="logOutButton" id="logOutButton" style="display:none;"><!--Log Out Button-->
                 <button onclick="submitLogOut()">Log Out</button>
             </div>
+
+            
     
 
             <!--JavaScript to make forms open/close-->
@@ -379,6 +381,62 @@
                 })
                 .catch(error => console.error("Error:", error));
             }
+
+            function processBoardOptionsForm(event) {
+                event.preventDefault();
+
+                if (!currentOpenBoardID) {
+                    alert("No board selected.");
+                    return;
+                }
+
+                let form = document.querySelector(".boardOptionsForm-Container");
+                let nameInput = form.querySelector("input[name='boardName']");
+                let visibilityInput = form.querySelector("input[name='boardPrivacy']:checked");
+
+                let newName = nameInput.value.trim();
+                let newVisibility = visibilityInput ? visibilityInput.value : null;
+
+                if (!newName || !newVisibility) {
+                    alert("Please enter a board name and select visibility.");
+                    return;
+                }
+
+                let formData = new FormData();
+                formData.append("BoardID", currentOpenBoardID);
+                formData.append("boardName", newName);
+                formData.append("boardPrivacy", newVisibility);
+
+                fetch("EditBoard.php", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                         console.log("EditBoard response:", data);
+                        // update the board object
+                        boards[currentOpenBoardID].boardName = newName;
+                        boards[currentOpenBoardID].boardVisibility = newVisibility;
+
+                        // update left panel text
+                        const boardDiv = document.getElementById(currentOpenBoardID);
+                        boardDiv.textContent = `Name: ${newName}`;
+
+                        // update the title
+                        const rightContent = document.getElementById("rightContent");
+                        const title = rightContent.querySelector("h2");
+                        if (title) title.textContent = `Board: ${newName}`;
+
+                        closeBoardOptionsForm();
+                    } else {
+                         console.log("EditBoard response:", data);
+                        alert(data.message);
+                    }
+                })
+                .catch(err => console.error("Error editing board:", err));
+            }
+
 
 
             /////////////////////////////////////////////
@@ -585,21 +643,6 @@
             /////////////////////////////////////////////
             /////////////////////////////////////////////
             /////////////////////////////////////////////
-            //            Process edit board                 
-            /////////////////////////////////////////////
-            /////////////////////////////////////////////
-
-            function processBoardOptionsForm(event){
-                event.preventDefault();
-
-                //add code to get new name and visibility
-                //pass new name and visibility to existing board
-            }
-
-
-            /////////////////////////////////////////////
-            /////////////////////////////////////////////
-            /////////////////////////////////////////////
 
             let currentTargetListContainer = null;
             let currentTargetCardContainer = null;
@@ -785,6 +828,8 @@
             document.querySelector(".newBoardForm-Container").addEventListener("submit", processNewBoardForm);
             document.querySelector(".newCardForm-Container").addEventListener("submit", processNewCardForm);
             document.querySelector(".newListItemForm-Container").addEventListener("submit", processNewListItemForm);
+            document.querySelector(".boardOptionsForm-Container").addEventListener("submit", processBoardOptionsForm);
+
 
         </script>
     
