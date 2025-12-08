@@ -252,13 +252,28 @@
                                                     <input type="text" placeholder="Enter the new card description" name="cardDescription">
 
                                                     <label for="cardColor">Select the card's color:</label>
-                                                    <input type="color" id="newCardColor" name="newCardColor" value="#ff0000">
+                                                    <input type="color" id="newCardColor" name="cardColor" value="#ff0000">
 
-                                                    <button type="submit">Edit Card</button>
+                                                    <button type="submit" id="editCardSubmitButton">Edit Card</button>
                                                     <button type ="button" id="closeEditCardBtn" onclick="closeEditCardForm()">Close</button> 
                                             </form>
 
                                         </div><!--End edit card form div-->
+
+            <div class="editListPopUp" id="editListForm" style = "display:none;">
+                    <form action="null" class="editListItemForm-Container">  
+                                                <h1>Edit List Item</h1>
+
+                                                    <label for="listItemName">Item Name</label>
+                                                    <input type="text" placeholder="Enter the new item name" name="listItemName">
+
+                                                    <label for="listItemDescription">Item Description</label>
+                                                    <input type="text" placeholder="Enter the new item description" name="listItemDescription">
+
+                                                    <button type="submit" id="editListSubmitButton">Edit List</button>
+                                                    <button type ="button" id="closeEditListBtn" onclick="closeEditListForm()">Close</button> 
+                                            </form>
+            </div>
 
 
             <div class="logOutButton" id="logOutButton" style="display:none;"><!--Log Out Button-->
@@ -420,12 +435,12 @@
                         boards[currentOpenBoardID].boardVisibility = newVisibility;
 
                         // update left panel text
-                        const boardDiv = document.getElementById(currentOpenBoardID);
+                        let boardDiv = document.getElementById(currentOpenBoardID);
                         boardDiv.textContent = `Name: ${newName}`;
 
                         // update the title
-                        const rightContent = document.getElementById("rightContent");
-                        const title = rightContent.querySelector("h2");
+                        let rightContent = document.getElementById("rightContent");
+                        let title = rightContent.querySelector("h2");
                         if (title) title.textContent = `Board: ${newName}`;
 
                         closeBoardOptionsForm();
@@ -491,7 +506,7 @@
                 newListButton.textContent = "Add a list item";
                 newListButton.className = "newListItemButton";
                 newListButton.onclick = () => {
-                    currentOpenCardID = cardID; //  <-- use numeric DB ID if available
+                    currentOpenCardID = cardID;
                     openNewListItemForm(listContainerID);
                 };
 
@@ -553,6 +568,61 @@
 
             }
 
+            function processEditCardForm(event){
+                event.preventDefault();
+
+                if(!currentOpenCardID){
+                    alert("No card selected");
+                    return;
+                }
+
+                //cardName - type text
+                //cardDescription - typw text
+                //cardColor - type color
+                let editCardForm = document.querySelector(".editCardForm-Container");
+                let newCardName = editCardForm.querySelector("input[name='cardName']");
+                let newCardDesc = editCardForm.querySelector("input[name='cardDescription']");
+                let newCardColor = editCardForm.querySelector("input[name='cardColor']");
+
+                let newCName = newCardName.value.trim();
+                let newCDesc = newCardDesc ? newCardDesc.value : '';
+
+                if(!newCName){
+                    alert("Please enter a card name a description");
+                    return;
+                }
+
+                let formData = new FormData();
+                formData.append("CardID", currentOpenCardID.replace("card_", ""));
+                formData.append("cardName", newCName);
+                formData.append("cardDescription", newCDesc);
+                formData.append("cardColor", newCardColor.value);
+
+                fetch("EditCard.php",{
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data =>{
+                    if(data.success){
+                        console.log("EditCard response:", data);
+
+                        //update the card
+                        cards[currentOpenCardID].cardName = newCName;
+                        cards[currentOpenCardID].cardDescription = newCDesc;
+
+                        let cardDiv = document.getElementById(currentOpenCardID);
+                        cardDiv.querySelector("h2").textContent = newCName;
+                        cardDiv.querySelector("p").textContent = newCDesc;
+                        cardDiv.style.backgroundColor = newCardColor.value;
+                        closeEditCardForm();
+                    }else{
+                        alert(data.message);
+                    }
+                })
+                .catch(err => console.error("Error editing card:", err));
+            }
+
 
 
 
@@ -584,10 +654,34 @@
 
                 const newListEntry = document.createElement("li");
                 newListEntry.className = "listsItem";
-                newListEntry.textContent = `Item: ${listItemName} \r\n`;
-                newListEntry.textContent += `Description: ${listItemDescription}`;
+                newListEntry.id = `list_${listItemID}`;
+                newListEntry.innerHTML = `
+                <span class="listName">${listItemName}</span><br>
+                <span class="listDescription">${listItemDescription}</span>
+                 `;
 
-                const targetContainer =document.getElementById(targetContainerID);
+
+                let editListButton = document.createElement("button");
+                editListButton.textContent = "Edit";
+                editListButton.className = "editListButton";
+                editListButton.onclick = () =>{
+                    let editForm = document.querySelector(".editListItemForm-Container");
+                    editForm.dataset.listId = listItemID;
+                    openEditListForm();
+                }
+                
+                
+                let deleteListButton = document.createElement("button");
+                deleteListButton.textContent = "Delete";
+                deleteListButton.className = "deleteListButton";
+                deleteListButton.onclick = () =>{
+                    //do something
+                }
+
+                newListEntry.appendChild(deleteListButton);
+                newListEntry.appendChild(editListButton);
+
+                const targetContainer = document.getElementById(targetContainerID);
 
                 if (targetContainer) {
                     targetContainer.appendChild(newListEntry);
@@ -629,6 +723,46 @@
 
                 closeNewListItemForm();
             }
+
+            function processEditListForm(event) {
+                event.preventDefault();
+
+                let form = event.target;
+
+                let listID = form.dataset.listId;
+                let listName = form.querySelector("input[name='listItemName']").value.trim();
+                let listDescription = form.querySelector("input[name='listItemDescription']").value.trim();
+
+                if (!listID) {
+                    console.error("Missing ListID");
+                    return;
+                }
+
+                let formData = new FormData();
+                formData.append("ListID", listID);
+                formData.append("ListName", listName);
+                formData.append("ListDescription", listDescription);
+
+                fetch("EditList.php", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.success) {
+                        throw new Error(data.message);
+                    }
+
+                    // update UI
+                    const listEl = document.querySelector(`#list_${listID}`);
+                    listEl.querySelector(".listName").textContent = listName;
+                    listEl.querySelector(".listDescription").textContent = listDescription;
+
+                    closeEditListForm();
+                })
+                .catch(err => console.error("Edit list error:", err));
+            }
+
 
 
             /////////////////////////////////////////////
@@ -707,6 +841,14 @@
 
             function closeNewListItemForm(){
                 document.getElementById("newListItemForm").style.display = "none";
+            }
+
+            function openEditListForm(){
+                document.getElementById("editListForm").style.display="block";
+            }
+
+            function closeEditListForm(){
+                document.getElementById("editListForm").style.display="none";
             }
 
             function openBoardOptionsForm(){
@@ -829,6 +971,8 @@
             document.querySelector(".newCardForm-Container").addEventListener("submit", processNewCardForm);
             document.querySelector(".newListItemForm-Container").addEventListener("submit", processNewListItemForm);
             document.querySelector(".boardOptionsForm-Container").addEventListener("submit", processBoardOptionsForm);
+            document.querySelector(".editCardForm-Container").addEventListener("submit", processEditCardForm);
+            document.querySelector(".editListItemForm-Container").addEventListener("submit", processEditListForm);
 
 
         </script>

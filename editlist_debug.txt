@@ -1,0 +1,6 @@
+Array
+(
+    [ListID] => listItem_1765212090090
+    [ListName] => edited title
+    [ListDescription] => edited desc
+)
