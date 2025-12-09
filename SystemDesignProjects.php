@@ -355,11 +355,40 @@
                     let newBoard = new Board(boardID, boardName, boardVisibility);
                     boards[boardID] = newBoard;
 
-                    const newBoardDiv = document.createElement("div");
+                    let newBoardDiv = document.createElement("div");
                     newBoardDiv.className = "boardsListItem";
                     newBoardDiv.id = boardID;
                     newBoardDiv.textContent = `Name: ${boardName}`;
+
+                    let delBoardButton = document.createElement("button");
+                    delBoardButton.textContent = "Delete Board";
+                    delBoardButton.className = "editCardButton";
+                    
+                    newBoardDiv.appendChild(delBoardButton);
                     newBoardDiv.onclick = () => newBoard.openBoard();
+
+                    delBoardButton.onclick = (e) => {
+                        e.stopPropagation(); // IMPORTANT
+
+                        if (!confirm("Delete this board?")) return;
+
+                        let formData = new FormData();
+                        formData.append("BoardID", boardID);
+
+                        fetch("DeleteBoard.php", {
+                            method: "POST",
+                            body: formData
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                document.getElementById(boardID).remove();
+                                delete boards[boardID];
+                                document.getElementById("rightContent").innerHTML = "";
+                            }
+                        });
+                    };
+
 
                     document.getElementById("leftContent").appendChild(newBoardDiv);
             }
@@ -475,11 +504,11 @@
             }
 
             function addCard(cardName, cardDescription, cardID = null) {
-                const realCardID = cardID ? `card_${cardID}` : `card_${Date.now()}`;
+                let realCardID = cardID ? `card_${cardID}` : `card_${Date.now()}`;
                 let newCard = new Card(realCardID, cardName, cardDescription);
                 cards[realCardID] = newCard;
 
-                const newCardDiv = document.createElement("div");
+                let newCardDiv = document.createElement("div");
                 newCardDiv.className = "alignCards";
                 newCardDiv.id = realCardID;
 
@@ -489,18 +518,50 @@
                 let cardDescriptionElement = document.createElement("p");
                 cardDescriptionElement.textContent = cardDescription;
 
-                const listsContainer = document.createElement("div");
-                const listContainerID = `listsContainer_${realCardID}`;
+                let listsContainer = document.createElement("div");
+                let listContainerID = `listsContainer_${realCardID}`;
                 listsContainer.className = "listsContainer";
                 listsContainer.id = listContainerID;
 
-                const editCardButton = document.createElement("button");
+                let editCardButton = document.createElement("button");
                 editCardButton.textContent = "Edit Card";
                 editCardButton.className = "editCardButton";
                 editCardButton.onclick = () =>{
                     currentOpenCardID = realCardID;
                     openEditCardForm(currentOpenCardID);
                 };
+
+                let delCardButton = document.createElement("button");
+                delCardButton.textContent = "Delete Card";
+                delCardButton.className =("editCardButton");
+                delCardButton.onclick = () => {
+                    if (!confirm("Delete this card?")) return;
+
+                    const numericCardID = realCardID.replace("card_", "");
+
+                    let formData = new FormData();
+                    formData.append("CardID", numericCardID);
+
+                    fetch("DeleteCard.php", {
+                        method: "POST",
+                        body: formData
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            document.getElementById(realCardID).remove();
+                            delete cards[realCardID];
+                        } else {
+                            alert("Failed to delete card: " + data.message);
+                        }
+                    })
+                    .catch(err => {
+                        console.error("Delete card error:", err);
+                        alert("Network error deleting card");
+                    });
+                };
+
+
 
                 const newListButton = document.createElement("button");
                 newListButton.textContent = "Add a list item";
@@ -513,6 +574,7 @@
                 listsContainer.appendChild(newListButton);
                 newCardDiv.appendChild(cardTitleElement);
                 newCardDiv.appendChild(editCardButton);
+                newCardDiv.appendChild(delCardButton);
                 newCardDiv.appendChild(cardDescriptionElement);
                 newCardDiv.appendChild(listsContainer);
 
@@ -647,7 +709,7 @@
             }
 
             function addListItem(listItemName, listItemDescription, targetContainerID){
-                const listItemID = `listItem_${Date.now()}`;
+                const listItemID = `listItem_${Date.now()}`; // stays for UI
 
                 let newListItem = new ListItem (listItemID, listItemName, listItemDescription);
                 lists[listItemID] = newListItem;
@@ -674,9 +736,27 @@
                 let deleteListButton = document.createElement("button");
                 deleteListButton.textContent = "Delete";
                 deleteListButton.className = "deleteListButton";
-                deleteListButton.onclick = () =>{
-                    //do something
-                }
+                deleteListButton.onclick = () => {
+                    if (!confirm("Delete this list item?")) return;
+
+                    let dbListID = listItemID.replace("listItem_", "");
+
+                    let formData = new FormData();
+                    formData.append("ListID", dbListID);
+
+                    fetch("DeleteList.php", {
+                        method:"POST",
+                        body: formData
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            newListEntry.remove();
+                            delete lists[listItemID];
+                        }
+                    });
+                };
+
 
                 newListEntry.appendChild(deleteListButton);
                 newListEntry.appendChild(editListButton);
