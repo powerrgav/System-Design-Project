@@ -30,7 +30,7 @@ ol{
 
 .headerContainer {
   background-color: #444; /* optional: helps visibility */
-  color: orange;
+  color: #ede1dd;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -87,7 +87,7 @@ ol{
 .welcome-text {
   font-weight: bold;
   font-size: 16px;
-  color: green;
+  color: #ede1dd;
 }
 
 
@@ -102,7 +102,7 @@ ol{
 .boardTitleHeader{
     display:block;
     z-index: 0;
-    background-color: blueviolet;
+    background-color: rgb(87, 82, 82);
 }
 
 .boardTitleHeaderWrap{
@@ -128,8 +128,14 @@ ol{
 }
 
 .boardTitleHeaderOptionsButton{
-    float: inline-end;
-    text-align: center;
+    position: static ; /* remove fixed positioning */
+  padding: 8px 14px;
+  border: none;
+  background-color: #888;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 
@@ -157,13 +163,13 @@ ol{
     padding-right: 2.5%;
     flex-grow: 0;
     flex-shrink: 1;
-    background-color: lightblue;
+    background-color:rgb(87, 82, 82);
 }
 
 .rightContentDiv{
     flex-grow: 1;
     flex-shrink: 0;
-    background-color: lightgreen;
+    background-color: #ede1dd;
 }
 
 
@@ -178,7 +184,7 @@ ol{
     flex-direction: column;
     height: auto;
     padding-right: 2.5%;
-    border: 5px solid olivedrab;
+    border: 5px solid #ede1dd;
     text-align: center;
     margin-top: 4%;
 }
@@ -234,6 +240,7 @@ ol{
     max-width: 250px;
     padding: 10px;
     background-color: white;
+    color: black;
 }
 
 .form-container input [type=text], .form-container input [type=password]{
@@ -256,7 +263,14 @@ ol{
 *********************************************************************************/
 
 .newBoardButton{
-    position: relative;
+    position: relative; /* remove fixed positioning */
+  padding: 8px 14px;
+  border: none;
+  background-color: #888;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .newBoardPopUp{
@@ -284,7 +298,14 @@ ol{
 
 *********************************************************************************/
 .boardOptionsButton{
-    position: relative;
+    position: relative; /* remove fixed positioning */
+  padding: 8px 14px;
+  border: none;
+  background-color: #888;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .boardOptionsPopUp{
@@ -317,7 +338,14 @@ ol{
 *********************************************************************************/
 
 .newCardButton{
-    position: relative;
+    position: relative; /* remove fixed positioning */
+  padding: 8px 14px;
+  border: none;
+  background-color: #888;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .newCardPopUp{
@@ -365,7 +393,7 @@ ol{
     align-self: flex-start;
     height: 100%;
     padding-right: 5px;
-    border: 5px solid indianred;
+    border: 2px solid #000000;
 }
 
 
@@ -375,7 +403,14 @@ ol{
 *********************************************************************************/
 
 .editCardButton{
-    position: relative;
+    position: relative; /* remove fixed positioning */
+  padding: 8px 14px;
+  border: none;
+  background-color: #888;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .editCardPopUp{
@@ -405,7 +440,14 @@ ol{
 *********************************************************************************/
 
 .newListItemButton{
-    position: relative;
+    position: relative; /* remove fixed positioning */
+  padding: 8px 14px;
+  border: none;
+  background-color: #888;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .newListItemPopUp{
@@ -440,11 +482,18 @@ ol{
 
 .listsItem{
     margin-left: 40px;
-    border: 5px solid olivedrab;
+    border: 2px solid black;
 }
 
 .deleteListButton{
-    position: relative;
+    position: relative ; /* remove fixed positioning */
+  padding: 8px 14px;
+  border: none;
+  background-color: #888;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 /*********************************************************************************
@@ -453,7 +502,14 @@ ol{
 *********************************************************************************/
 
 .editListButton{
-    position:relative;
+    position: relative ; /* remove fixed positioning */
+  padding: 8px 14px;
+  border: none;
+  background-color: #888;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .editListPopUp{

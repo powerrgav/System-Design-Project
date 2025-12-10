@@ -85,7 +85,7 @@
                 <div class="boardTitleHeaderWrap"><!--Wrap the board title header--> 
                     
                 <span class="boardTitleHeaderLeft">
-                    <p>hello</p>
+                    <p style="color:white;">Boards and content below</p>
                 </span>
                     
                 <span class="boardTitleHeaderRight">
@@ -185,8 +185,6 @@
                         //check connection
                         if ($conn->connect_error) {
                             die("Connection failed". $conn->connect_error);
-                        } else {
-                            echo "successful connection!";
                         }
                     ?>
 
@@ -512,6 +510,9 @@
                 newCardDiv.className = "alignCards";
                 newCardDiv.id = realCardID;
 
+                let newCardHead = document.createElement("div");
+                newCardHead.className = "cardHeader";
+
                 let cardTitleElement = document.createElement("h2");
                 cardTitleElement.textContent = cardName;
 
@@ -573,6 +574,7 @@
 
                 listsContainer.appendChild(newListButton);
                 newCardDiv.appendChild(cardTitleElement);
+                newCardDiv.appendChild(newCardHead);
                 newCardDiv.appendChild(editCardButton);
                 newCardDiv.appendChild(delCardButton);
                 newCardDiv.appendChild(cardDescriptionElement);
