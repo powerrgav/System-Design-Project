@@ -103,6 +103,25 @@
                                 <input type="radio" id="publicVisibility" name="boardPrivacy" value="Public">
                                 <label for="publicVisibility">Public</label>
 
+                                <div class="boardGameContainer">
+                                    <label>Select Game:</label>
+                                    <div>
+                                        <label>
+                                            <input type="radio" name="editBoardGame" value="none">
+                                            None
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="editBoardGame" value="civilization">
+                                            Civilization
+                                        </label>
+                                        <label>
+                                            <input type="radio" name="editBoardGame" value="football_manager">
+                                            Football Manager
+                                        </label>
+                                    </div>
+                                </div>
+
+
                                <button type="submit" id="confirmBoardOptionsBtn">Edit Board</button>
                                 <button type ="button" id="closeBoardOptionsBtn" onclick="closeBoardOptionsForm()">Close</button>
                             </form>
@@ -129,6 +148,25 @@
 
                                     <input type="radio" id="publicVisibility" name="boardPrivacy" value="Public">
                                     <label for="publicVisibility">Public</label>
+
+                                    <div class="boardGameContainer">
+                                        <label>Select Game:</label>
+                                        <div>
+                                            <label>
+                                                <input type="radio" name="boardGame" value="none" checked>
+                                                None
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="boardGame" value="civilization">
+                                                Civilization
+                                            </label>
+                                            <label>
+                                                <input type="radio" name="boardGame" value="football_manager">
+                                                Football Manager
+                                            </label>
+                                        </div>
+                                    </div>
+
 
                                     <button type="submit" id="createBoardBtn">Create Board</button>
                                     <button type ="button" id="closeNewBoardBtn" onclick="closeNewBoardForm()">Close</button>
@@ -399,6 +437,10 @@
                 let nameInput = form.querySelector("input[name='boardName']");
                 let visibilityInput = form.querySelector("input[name='boardPrivacy']:checked");
 
+                let gameInput = form.querySelector("input[name='boardGame']:checked");
+                let selectedGame = gameInput ? gameInput.value : "none";
+
+
                 let name = nameInput.value.trim();
                 let visibility = visibilityInput ? visibilityInput.value : null;
 
@@ -410,6 +452,7 @@
                 let formData = new FormData();
                 formData.append("boardName", name);
                 formData.append("boardPrivacy", visibility);
+                formData.append("SelectedGame", selectedGame);
 
                 fetch("CreateBoard.php", {
                     method: "POST",
@@ -435,6 +478,8 @@
                 let form = document.querySelector(".boardOptionsForm-Container");
                 let nameInput = form.querySelector("input[name='boardName']");
                 let visibilityInput = form.querySelector("input[name='boardPrivacy']:checked");
+                let gameInput = form.querySelector("input[name='editBoardGame']:checked");
+                let selectedGame = gameInput ? gameInput.value : null;
 
                 let newName = nameInput.value.trim();
                 let newVisibility = visibilityInput ? visibilityInput.value : null;
@@ -448,6 +493,7 @@
                 formData.append("BoardID", currentOpenBoardID);
                 formData.append("boardName", newName);
                 formData.append("boardPrivacy", newVisibility);
+                formData.append("SelectedGame", selectedGame);
 
                 fetch("EditBoard.php", {
                     method: "POST",
@@ -935,6 +981,10 @@
 
             function openBoardOptionsForm(){
                 document.getElementById("boardOptionsForm").style.display = "block";
+                let game = boards[boardID].SelectedGame || "none";
+                let option = document.querySelector(`input[name='editBoardGame'][value='${game}']`);
+                if (option) option.checked = true;
+
             }
 
             function closeBoardOptionsForm(){
