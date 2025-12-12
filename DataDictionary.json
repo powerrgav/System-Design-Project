@@ -1,0 +1,82 @@
+{
+    "civilization": {
+        "aerodrome": [
+            "Build aircraft to defend key cities",
+            "Boost production in the city for faster plane output",
+            "Upgrade early aircraft to avoid falling behind in air power"
+        ],
+        "campus": [
+            "Place campuses early to maximize science",
+            "Use terrain adjacency like mountains for big yields",
+            "Build libraries and universities to snowball science"
+        ],
+        "holy site": [
+            "Prioritize high-faith pantheons",
+            "Rush religion if you want beliefs",
+            "Use faith to buy units and buildings later"
+        ],
+        "industrial zone": [
+            "Place next to mines and quarries for adjacency",
+            "Improve tile yields to increase production",
+            "Use production to accelerate wonders and units"
+        ],
+        "commercial hub": [
+            "Connect trade routes for early gold",
+            "Use adjacency from rivers",
+            "Build markets to boost economy"
+        ],
+        "harbor": [
+            "Use coastal cities for strong trade routes",
+            "Prioritize lighthouses for food and housing",
+            "Control the seas with early naval units"
+        ],
+        "theater square": [
+            "Generate culture to unlock civics faster",
+            "Use great works to push tourism victory",
+            "Place next to wonders for adjacency"
+        ],
+        "encampment": [
+            "Produce strong land units early",
+            "Boost general points for combat bonuses",
+            "Defend chokepoints with ranged units"
+        ],
+        "entertainment complex": [
+            "Increase amenities for large cities",
+            "Build zoos and stadiums for wide empires",
+            "Use amenities to prevent rebellions"
+        ]
+    },
+
+    "football_manager": {
+        "training": [
+            "Adjust intensity based on match schedule",
+            "Use role-specific sessions to develop players",
+            "Increase match sharpness before big games"
+        ],
+        "transfer": [
+            "Scout players with high potential ability",
+            "Monitor contract expiry dates for bargains",
+            "Sell fringe players to maintain squad balance"
+        ],
+        "tactics": [
+            "Choose a system that fits your squad attributes",
+            "Use opposition instructions to limit threats",
+            "Analyze post-game data to adjust your formation"
+        ],
+        "scouting": [
+            "Assign scouts to regions with high talent density",
+            "Prioritize attributes relevant to your tactic",
+            "Use youth intake reports to find hidden gems"
+        ],
+        "fitness": [
+            "Rotate players to prevent injuries",
+            "Monitor stamina and match sharpness weekly",
+            "Use recovery sessions after intense matches"
+        ],
+        "finances": [
+            "Control wage structure to avoid overspending",
+            "Sign young players with resale value",
+            "Balance prize money and transfer budget"
+        ]
+    }
+}

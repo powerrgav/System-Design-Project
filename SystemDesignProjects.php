@@ -327,6 +327,11 @@
             const lists = {};
             let currentOpenBoardID = null;
             let currentOpenCardID = null;
+            let gameDictionary = {};
+
+            fetch("DataDictionary.json")
+                        .then(response => response.json())
+                        .then(data => dataDictionary = data);
 
 
             //Classes
@@ -541,10 +546,6 @@
                 getCardDetails() {
                     return `${this.cardName} (${this.cardDescription})`;
                 }
-
-                displayCard(){
-                    //do something
-                }
             }
 
             function addCard(cardName, cardDescription, cardID = null) {
@@ -749,10 +750,6 @@
 
                 getListItemDetails(){
                      return `${this.listItemName} (${this.listItemDescription})`;
-                }
-
-                displayList(){
-                    //do something
                 }
             }
 
@@ -1075,7 +1072,7 @@
 
                                 // append boards below the button
                                 boards.forEach(b =>{ 
-                                    console.log("Loaded board:", b.BoardID, b.BoardName); // 🧩 debug
+                                    console.log("Loaded board:", b.BoardID, b.BoardName); //debugging
                                     addBoard(b.BoardName, b.BoardPrivacy, b.BoardID);
                                 });
                             })
