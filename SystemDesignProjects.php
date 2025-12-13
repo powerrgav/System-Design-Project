@@ -330,8 +330,12 @@
             let gameDictionary = {};
 
             fetch("DataDictionary.json")
-                        .then(response => response.json())
-                        .then(data => dataDictionary = data);
+            .then(response => response.json())
+            .then(data => {
+                gameDictionary = data;
+                console.log("Game dictionary loaded:", gameDictionary);
+            });
+
 
 
             //Classes
@@ -342,10 +346,11 @@
 
             class Board{
                 //Constructor
-                constructor (id, boardName, boardVisibility){
+                constructor (id, boardName, boardVisibility, selectedGame="none"){
                     this.id = id;
                     this.boardName = boardName;
                     this.boardVisibility =boardVisibility;
+                    this.SelectedGame=selectedGame;
                 }
                 
                 getDetails() {
@@ -392,9 +397,11 @@
             }
 
             //add a new board function
-            function addBoard(boardName, boardVisibility, boardID) {
-                    let newBoard = new Board(boardID, boardName, boardVisibility);
+            function addBoard(boardName, boardVisibility, boardID, selectedGame="none") {
+                    let newBoard = new Board(boardID, boardName, boardVisibility, selectedGame);
                     boards[boardID] = newBoard;
+
+                    console.log("Board "+boardID+ " has game " + selectedGame)
 
                     let newBoardDiv = document.createElement("div");
                     newBoardDiv.className = "boardsListItem";
@@ -814,6 +821,39 @@
 
             }
 
+            function checkForRecommendations(listItemName) {
+                if (!listItemName) return;
+                if (!gameDictionary || Object.keys(gameDictionary).length === 0) return;
+
+                const keyword = listItemName.toLowerCase().trim();
+                const gamesToCheck = ["civilization", "football_manager"]; // hardcoded list of games
+
+                let text = `Recommendations for "${keyword}":\n\n`;
+
+                let foundAny = false;
+
+                gamesToCheck.forEach(game => {
+                    if (gameDictionary[game] && gameDictionary[game][keyword]) {
+                        foundAny = true;
+                        const recommendations = gameDictionary[game][keyword];
+                        text += `${game}:\n`;
+                        recommendations.forEach(r => {
+                            text += `• ${r}\n`;
+                        });
+                        text += "\n";
+                    }
+                });
+
+                if (foundAny) {
+                    alert(text);
+                } else {
+                    alert(`No recommendations found for "${keyword}"`);
+                }
+            }
+
+
+
+
             function processNewListItemForm(event){
                 event.preventDefault();
 
@@ -842,6 +882,8 @@
                 .then(message => {
                     console.log(message);
                     addListItem(lname, ldesc, currentTargetListContainer);
+                    checkForRecommendations(lname);
+
                     closeNewListItemForm();
                 })
                 .catch(error => console.error("Error creating list:", error));
@@ -893,12 +935,6 @@
             /////////////////////////////////////////////
             /////////////////////////////////////////////
             /////////////////////////////////////////////
-
-
-            function User(){
-
-            }
-
             /////////////////////////////////////////////
             /////////////////////////////////////////////
             /////////////////////////////////////////////
@@ -978,11 +1014,14 @@
 
             function openBoardOptionsForm(){
                 document.getElementById("boardOptionsForm").style.display = "block";
-                let game = boards[boardID].SelectedGame || "none";
-                let option = document.querySelector(`input[name='editBoardGame'][value='${game}']`);
-                if (option) option.checked = true;
 
+                if (!currentOpenBoardID) return;
+
+                const game = boards[currentOpenBoardID].SelectedGame || "none";
+                const option = document.querySelector(`input[name='editBoardGame'][value='${game}']`);
+                if (option) option.checked = true;
             }
+
 
             function closeBoardOptionsForm(){
                 document.getElementById("boardOptionsForm").style.display = "none";
@@ -1065,18 +1104,30 @@
                         // now load user boards
                         fetch("GetBoards.php")
                             .then(response => response.json())
-                            .then(boards => {
-                                // remove ONLY old board entries (not the button)
-                                const existingBoards = leftContent.querySelectorAll(".boardsListItem");
-                                existingBoards.forEach(el => el.remove());
+                            .then(boardArray => {  // rename to avoid shadowing
+                                const leftContent = document.getElementById("leftContent");
 
-                                // append boards below the button
-                                boards.forEach(b =>{ 
-                                    console.log("Loaded board:", b.BoardID, b.BoardName); //debugging
-                                    addBoard(b.BoardName, b.BoardPrivacy, b.BoardID);
+                                // remove old board divs (not the button)
+                                leftContent.querySelectorAll(".boardsListItem").forEach(el => el.remove());
+
+                                // append new boards
+                                boardArray.forEach(b => {
+                                    const selectedGame = b.SelectedGame || b.selectedGame || "none";
+
+                                    // Add board to global object
+                                    addBoard(b.BoardName, b.BoardPrivacy, b.BoardID, selectedGame);
+
+                                    // Attach SelectedGame safely
+                                    if (boards[b.BoardID]) {  // now references global object
+                                        boards[b.BoardID].SelectedGame = selectedGame;
+                                        console.log(`Attached SelectedGame to board ${b.BoardID}`);
+                                    } else {
+                                        console.warn("Board not found, cannot attach SelectedGame:", b);
+                                    }
                                 });
                             })
                             .catch(err => console.error("Error loading boards:", err));
+
                     })
                     .catch(error=>{
                         responseContainer.innerHTML = "An error occurred.";
