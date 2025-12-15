@@ -846,9 +846,7 @@
 
                 if (foundAny) {
                     alert(text);
-                } else {
-                    alert(`No recommendations found for "${keyword}"`);
-                }
+                } 
             }
 
 
