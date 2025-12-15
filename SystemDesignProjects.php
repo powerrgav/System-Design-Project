@@ -362,9 +362,14 @@
                     currentOpenBoardID = this.id;
                     console.log("Opening board:", this.id, this.boardName);
 
-                    const newCardButton = document.getElementById("newCardButton");
                     const rightContent = document.getElementById("rightContent");
                     rightContent.innerHTML = "";
+                    
+                    const newCardButton = document.createElement("button");
+                    newCardButton.textContent = "New Card";
+                    newCardButton.className = "newCardButton";
+                    newCardButton.onclick = openNewCardForm;
+
                     rightContent.appendChild(newCardButton);
 
                     const boardTitle = document.createElement("h2");
@@ -470,10 +475,10 @@
                     method: "POST",
                     body: formData
                 })
-                .then(response => response.text())
-                .then(message => {
-                    alert(message);
-                    addBoard(name, visibility);
+                .then(response => response.json())
+                .then(data => {
+                    
+                    addBoard(name, visibility, data.BoardID);
                     closeNewBoardForm();
                 })
                 .catch(error => console.error("Error:", error));
